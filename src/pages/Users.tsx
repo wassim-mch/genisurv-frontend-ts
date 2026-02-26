@@ -42,51 +42,67 @@ export default function Users() {
 
   return (
     <Layout>
-      <h1>{t("users")}</h1>
+      <div className="users-container">
+        <div className="users-header">
+          <h1>{t("users")}</h1>
+        </div>
 
-      <UsersForm
-        user={editingUser || undefined}
-        onSuccess={() => {
-          setEditingUser(null);
-          fetchUsers();
-        }}
-        onCancel={() => setEditingUser(null)}
-      />
+        <div className="users-form-wrapper">
+          <UsersForm
+            user={editingUser || undefined}
+            onSuccess={() => {
+              setEditingUser(null);
+              fetchUsers();
+            }}
+            onCancel={() => setEditingUser(null)}
+          />
+        </div>
 
-      {loading ? (
-        <p>{t("loading")}</p>
-      ) : (
-        <table border={1} style={{ width: "100%", marginTop: "10px" }}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>{t("name")}</th>
-              <th>{t("email")}</th>
-              <th>{t("role")}</th>
-              <th>{t("actions")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.map((u) => (
-              <tr key={u.id}>
-                <td>{u.id}</td>
-                <td>{u.nom}</td>
-                <td>{u.email}</td>
-                <td>{u.role}</td>
-                <td>
-                  <button onClick={() => setEditingUser(u)}>
-                    {t("edit")}
-                  </button>
+        {loading ? (
+          <div className="users-loading">{t("loading")}...</div>
+        ) : (
+          <div className="users-table-wrapper">
+            <table className="users-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>{t("name")}</th>
+                  <th>{t("email")}</th>
+                  <th>{t("role")}</th>
+                  <th>{t("actions")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users?.map((u) => (
+                  <tr key={u.id}>
+                    <td>{u.id}</td>
+                    <td>{u.nom}</td>
+                    <td>{u.email}</td>
+                    <td>
+                      <span className="role-badge">{u.role}</span>
+                    </td>
+                    <td className="actions-cell">
+                      <button
+                        className="btn-edit"
+                        onClick={() => setEditingUser(u)}
+                      >
+                        {t("edit")}
+                      </button>
 
-                  <button onClick={() => handleDelete(u.id)}>
-                    {t("delete")}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDelete(u.id)}
+                      >
+                        {t("delete")}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </Layout>
   );
 }

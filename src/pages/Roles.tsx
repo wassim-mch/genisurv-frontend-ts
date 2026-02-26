@@ -22,7 +22,7 @@ export default function Roles() {
       setLoading(false);
     }
   };
-  
+
   const fetched = useRef(false);
 
   useEffect(() => {
@@ -57,13 +57,13 @@ export default function Roles() {
       {loading ? (
         <p>{t("loading")}</p>
       ) : (
-        <table border={1} style={{ width: "100%", marginTop: "10px" }}>
+        <table className="styled-table">
           <thead>
             <tr>
               <th>ID</th>
               <th>{t("role")}</th>
               <th>{t("permissions")}</th>
-              <th>{t("actions")}</th>
+              <th className="actions-col-td">{t("actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -72,9 +72,19 @@ export default function Roles() {
                 <td>{r.id}</td>
                 <td>{r.name}</td>
                 <td>{r.permissions.join(", ")}</td>
-                <td>
-                  <button onClick={() => setEditingRole(r)}>{t("edit")}</button>
-                  <button onClick={() => handleDelete(r.id)}>{t("delete")}</button>
+                <td className="actions-col">
+                  <button
+                    onClick={() => setEditingRole(r)}
+                    className="btn-primary"
+                  >
+                    {t("edit")}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(r.id)}
+                    className="btn-secondary"
+                  >
+                    {t("delete")}
+                  </button>
                 </td>
               </tr>
             ))}

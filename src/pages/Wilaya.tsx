@@ -16,17 +16,17 @@ export default function Wilayas() {
   const fetchWilayas = async () => {
     setLoading(true);
     try {
-        const data = await getWilayas();
-        setWilayas(data ?? []); // fallback لمصفوفة فارغة
+      const data = await getWilayas();
+      setWilayas(data ?? []); // fallback لمصفوفة فارغة
     } catch (error) {
-        console.error(error);
-        setWilayas([]); // safety
+      console.error(error);
+      setWilayas([]); // safety
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
- };
+  };
 
- const fetched = useRef(false);
+  const fetched = useRef(false);
 
   useEffect(() => {
     if (!permissions.includes("gerer_wilaya")) return;
@@ -34,7 +34,6 @@ export default function Wilayas() {
 
     fetched.current = true;
     fetchWilayas();
-
   }, [permissions]);
 
   const handleDelete = async (id: number) => {
@@ -60,27 +59,36 @@ export default function Wilayas() {
       {loading ? (
         <p>{t("loading")}</p>
       ) : (
-        <table border={1} style={{ width: "100%", marginTop: "10px" }}>
+        <table className="styled-table">
           <thead>
             <tr>
               <th>ID</th>
               <th>{t("wilaya")}</th>
-              <th>{t("actions")}</th>
+              <th className="actions-col-td">{t("actions")}</th>
             </tr>
           </thead>
           <tbody>
             {wilayas?.map((w) => (
-                <tr key={w.id}>
+              <tr key={w.id}>
                 <td>{w.id}</td>
                 <td>{w.nom}</td>
-                <td>
-                    <button onClick={() => setEditingWilaya(w)}>{t("edit")}</button>
-                    <button onClick={() => handleDelete(w.id)}>{t("delete")}</button>
+                <td className="actions-col">
+                  <button
+                    onClick={() => setEditingWilaya(w)}
+                    className="btn-primary"
+                  >
+                    {t("edit")}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(w.id)}
+                    className="btn-secondary"
+                  >
+                    {t("delete")}
+                  </button>
                 </td>
-                </tr>
+              </tr>
             )) || null}
           </tbody>
-
         </table>
       )}
     </Layout>

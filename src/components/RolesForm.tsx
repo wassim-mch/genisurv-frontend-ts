@@ -12,13 +12,16 @@ interface Props {
 export default function RolesForm({ role, onSuccess, onCancel }: Props) {
   const { t } = useTranslation();
   const [name, setName] = useState(role?.name || "");
-  const [permissions, setPermissions] = useState<string[]>(role?.permissions || []);
+  const [permissions, setPermissions] = useState<string[]>(
+    role?.permissions || [],
+  );
   const [allPermissions, setAllPermissions] = useState<string[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     getPermissions().then(setAllPermissions);
   }, []);
+  console.log(allPermissions)
 
   const validate = () => {
     const errs: { [key: string]: string } = {};
@@ -45,37 +48,57 @@ export default function RolesForm({ role, onSuccess, onCancel }: Props) {
 
   const togglePermission = (perm: string) => {
     setPermissions((prev) =>
-      prev.includes(perm) ? prev.filter((p) => p !== perm) : [...prev, perm]
+      prev.includes(perm) ? prev.filter((p) => p !== perm) : [...prev, perm],
     );
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
-      <div>
-        <label>{t("role")}</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-        {errors.name && <div style={{ color: "red" }}>{errors.name}</div>}
-      </div>
-
-      <div>
-        <label>{t("permissions")}</label>
-        <div>
-          {allPermissions.map((p) => (
-            <label key={p} style={{ display: "block" }}>
-              <input
-                type="checkbox"
-                checked={permissions.includes(p)}
-                onChange={() => togglePermission(p)}
-              />
-              {p}
-            </label>
-          ))}
+    <div className="roles-form-card">
+      <form onSubmit={handleSubmit} className="roles-form">
+        {/* Name */}
+        <div className="form-group">
+          <label>{t("role")}</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={errors.name ? "input error" : "input"}
+          />
+          {errors.name && <span className="error-text">{errors.name}</span>}
         </div>
-        {errors.permissions && <div style={{ color: "red" }}>{errors.permissions}</div>}
-      </div>
 
-      <button type="submit">{role ? t("update") : t("create")}</button>
-      {onCancel && <button onClick={onCancel}>{t("cancel")}</button>}
-    </form>
+        {/* Permissions */}
+        <div className="form-group">
+          <label>{t("permissions")}</label>
+          <div className="checkbox-group">
+            {allPermissions.map((p) => (
+              <label key={p}>
+                <input
+                  type="checkbox"
+                  checked={permissions.includes(p)}
+                  onChange={() => togglePermission(p)}
+                />
+                {p}
+              </label>
+            ))}
+          </div>
+          {errors.permissions && (
+            <span className="error-text">{errors.permissions}</span>
+          )}
+        </div>
+
+        {/* Buttons */}
+        <div className="form-actions">
+          <button type="submit" className="btn-primary">
+            {role ? t("update") : t("create")}
+          </button>
+          {onCancel && (
+            <button type="button" onClick={onCancel} className="btn-secondary">
+              {t("cancel")}
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
   );
 }
