@@ -58,41 +58,110 @@ export default function UsersForm({ user, onSuccess, onCancel }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>{t("name")}</label>
-      <input value={name} onChange={e => setName(e.target.value)} />
-      {errors.name && <div style={{color:"red"}}>{errors.name}</div>}
+    <div className="users-form-card">
+      <form onSubmit={handleSubmit} className="users-form">
+        <div className="form-grid">
+          {/* Name */}
+          <div className="form-group">
+            <label>{t("name")}</label>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className={errors.name ? "input error" : "input"}
+            />
+            {errors.name && <span className="error-text">{errors.name}</span>}
+          </div>
 
-      <label>{t("email")}</label>
-      <input value={email} onChange={e => setEmail(e.target.value)} />
-      {errors.email && <div style={{color:"red"}}>{errors.email}</div>}
+          {/* Email */}
+          <div className="form-group">
+            <label>{t("email")}</label>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={errors.email ? "input error" : "input"}
+            />
+            {errors.email && <span className="error-text">{errors.email}</span>}
+          </div>
 
-      <label>{t("password")}</label>
-      <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      {errors.password && <div style={{color:"red"}}>{errors.password}</div>}
+          {/* Password */}
+          <div className="form-group">
+            <label>{t("password")}</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={errors.password ? "input error" : "input"}
+            />
+            {errors.password && (
+              <span className="error-text">{errors.password}</span>
+            )}
+          </div>
 
-      <label>{t("confirm_password")}</label>
-      <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-      {errors.confirmPassword && <div style={{color:"red"}}>{errors.confirmPassword}</div>}
+          {/* Confirm Password */}
+          <div className="form-group">
+            <label>{t("confirm_password")}</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className={errors.confirmPassword ? "input error" : "input"}
+            />
+            {errors.confirmPassword && (
+              <span className="error-text">{errors.confirmPassword}</span>
+            )}
+          </div>
 
-      <label>{t("role")}</label>
-      <select value={roleId} onChange={e => setRoleId(Number(e.target.value))}>
-        <option value="">{t("select_role")}</option>
-        {roles.map(r => (
-          <option key={r.id} value={r.id}>{r.name}</option>
-        ))}
-      </select>
+          {/* Role */}
+          <div className="form-group">
+            <label>{t("role")}</label>
+            <select
+              value={roleId}
+              onChange={(e) => setRoleId(Number(e.target.value))}
+              className={errors.role_id ? "input error" : "input"}
+            >
+              <option value="">{t("select_role")}</option>
+              {roles.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.nom} {/* <-- fixed here */}
+                </option>
+              ))}
+            </select>
+            {errors.role_id && (
+              <span className="error-text">{errors.role_id}</span>
+            )}
+          </div>
 
-      <label>{t("wilaya")}</label>
-      <select value={wilayaId} onChange={e => setWilayaId(Number(e.target.value))}>
-        <option value="">{t("select_wilaya")}</option>
-        {wilayas.map(w => (
-          <option key={w.id} value={w.id}>{w.nom}</option>
-        ))}
-      </select>
+          {/* Wilaya */}
+          <div className="form-group">
+            <label>{t("wilaya")}</label>
+            <select
+              value={wilayaId}
+              onChange={(e) => setWilayaId(Number(e.target.value))}
+              className="input"
+            >
+              <option value="">{t("select_wilaya")}</option>
+              {wilayas.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.nom}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
-      <button type="submit">{user ? t("update") : t("create")}</button>
-      {onCancel && <button onClick={onCancel}>{t("cancel")}</button>}
-    </form>
+        {/* Buttons */}
+        <div className="form-actions">
+          <button type="submit" className="btn-primary">
+            {user ? t("update") : t("create")}
+          </button>
+
+          {onCancel && (
+            <button type="button" onClick={onCancel} className="btn-secondary">
+              {t("cancel")}
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
   );
 }

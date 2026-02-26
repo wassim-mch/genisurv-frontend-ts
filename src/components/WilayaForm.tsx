@@ -38,15 +38,30 @@ export default function WilayaForm({ wilaya, onSuccess, onCancel }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
-      <div>
-        <label>{t("wilaya")}</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-        {error && <div style={{ color: "red" }}>{error}</div>}
-      </div>
+    <div className="wilaya-form-card">
+      <form onSubmit={handleSubmit} className="wilaya-form">
+        <div className="form-group">
+          <label>{t("wilaya")}</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={error ? "input error" : "input"}
+          />
+          {error && <span className="error-text">{error}</span>}
+        </div>
 
-      <button type="submit">{wilaya ? t("update") : t("create")}</button>
-      {onCancel && <button type="button" onClick={onCancel}>{t("cancel")}</button>}
-    </form>
+        <div className="form-actions">
+          <button type="submit" className="btn-primary">
+            {wilaya ? t("update") : t("create")}
+          </button>
+          {onCancel && (
+            <button type="button" onClick={onCancel} className="btn-secondary">
+              {t("cancel")}
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { sidebarMenu } from "../utils/sidebarMenu";
 import { usePermissions } from "../hooks/usePermissions";
 import { useTranslation } from "react-i18next";
@@ -10,38 +11,34 @@ export default function Sidebar() {
   const isRTL = i18n.language === "ar";
 
   return (
-    <aside
-      style={{
-        width: "220px",
-        background: "#1f2937",
-        color: "white",
-        padding: "20px",
-        direction: isRTL ? "rtl" : "ltr",
-      }}
-    >
-      <h3>{t("dashboard")}</h3>
+    <aside className={`sidebar ${isRTL ? "rtl" : ""}`}>
+      <h3 className="sidebar-title">{t("dashboard")}</h3>
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <ul className="sidebar-menu">
         {sidebarMenu.map((item) => {
           const hasPermission = Array.isArray(item.permission)
-            ? item.permission.some(p => permissions.includes(p))
+            ? item.permission.some((p) => permissions.includes(p))
             : permissions.includes(item.permission);
 
           if (!hasPermission) return null;
 
+          const Icon = item.icon;
+
           return (
-            <li key={item.path} style={{ marginBottom: "10px" }}>
-              <Link
+            <li key={item.path}>
+              <NavLink
                 to={item.path}
-                style={{ color: "white", textDecoration: "none" }}
+                className={({ isActive }) =>
+                  `sidebar-link ${isActive ? "active" : ""}`
+                }
               >
-                {t(item.label.toLowerCase())}
-              </Link>
+                {Icon && <Icon className="sidebar-icon" />}
+                <span>{t(item.label.toLowerCase())}</span>
+              </NavLink>
             </li>
           );
         })}
       </ul>
-
     </aside>
   );
 }
